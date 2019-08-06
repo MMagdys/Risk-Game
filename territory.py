@@ -23,6 +23,18 @@ class Territory:
 
 
 
+	def __str__(self):
+
+		return "Territory: " + str(self.id) + " Army: " + str(self.troops) 
+
+
+
+	def __repr__(self):
+
+		return self.__str__()
+
+
+
 	def is_taken(self):
 
 		if self.taken_by is None:
