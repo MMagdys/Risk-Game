@@ -1,14 +1,38 @@
+
 class Territory:
-    def __init__(self, name, troops=0, takenBy=None):
-        self.name = name
-        self.troops = troops
-        self.takenBy = takenBy
 
-    def isTaken(self):
-        if self.takenBy is None:
-            return False
-        return True
 
-    def addTroops(self, player, troops):
-        self.takenBy = player
-        self.troops = self.troops + troops
+	def __init__(self, value, neighbours, troops=0, taken_by=None):
+
+		self.id = value
+		self.neighbours = neighbours
+		self.troops = troops
+		self.taken_by = taken_by
+
+
+
+	def __lt__(self, other):
+
+		return self.troops < other.troops
+
+
+
+	def __eq__(self, other):
+
+		return self.troops == other.troops
+
+
+
+	def is_taken(self):
+
+		if self.taken_by is None:
+			return False
+		return True
+
+
+
+	def add_troops(self, player, troops):
+
+		self.taken_by = player
+		self.troops = self.troops + troops
+
