@@ -1,4 +1,4 @@
-
+import heapq
 class PassiveAgent(object):
 
 	def __init__(self):
