@@ -35,11 +35,9 @@ class Territory:
 
 
 
-	def is_taken(self):
+	def taken_by(self):
 
-		if self.taken_by is None:
-			return False
-		return True
+		return self.taken_by
 
 
 

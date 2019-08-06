@@ -40,6 +40,7 @@ class game(object):
 			for j in range(self.armies):
 				t = random.randint(0, len(self.available_terr)-1)
 				self.available_terr[t].troops = 1
+				self.taken_by = players[i]
 				self.players[i].territories.append(self.available_terr[t])
 				del self.available_terr[t]
 			print(self.players[i].territories)
