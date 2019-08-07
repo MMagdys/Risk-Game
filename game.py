@@ -40,7 +40,7 @@ class game(object):
 			for j in range(self.armies):
 				t = random.randint(0, len(self.available_terr)-1)
 				self.available_terr[t].troops = 1
-				self.taken_by = players[i]
+				self.taken_by = self.players[i]
 				self.players[i].territories.append(self.available_terr[t])
 				del self.available_terr[t]
 			print(self.players[i].territories)
@@ -63,6 +63,10 @@ class game(object):
 				if bouns_armies < 3: bouns_armies = 3
 				player.play(bouns_armies)
 				t += 1
+		print("\nplayer 1")
+		print(self.players[0].territories)
+		print("\nplayer 2")
+		print(self.players[1].territories)
 
 
 
@@ -125,6 +129,6 @@ usaMap = {
 
 
 # FOR TESTING
-g = game("usa", ("passive", "passive"),3)
+g = game("usa", ("passive", "aggressive"),3)
 g.random_dist_terr()
 g.run()
