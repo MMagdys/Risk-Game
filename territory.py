@@ -2,10 +2,12 @@
 class Territory:
 
 
-	def __init__(self, value, neighbours, troops=0, taken_by=None):
+	def __init__(self, value, neighbours=None, troops=0, taken_by=None):
 
 		self.id = value
-		self.neighbours = neighbours
+		if neighbours:
+			self.neighbours = neighbours
+		else: self.neighbours = list()
 		self.troops = troops
 		self.taken_by = taken_by
 
