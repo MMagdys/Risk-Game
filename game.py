@@ -2,13 +2,13 @@ import random
 from  player import PassiveAgent, AggressiveAgent, Pacifist
 from territory import Territory
 from util import map_to_terr
-
+from ai import GreedyAgent
 
 EGY = ["Cairo", "Alexandria"]
 # USA = ["CA", "MA"]
 USA = [0,1,2,3,4,5,6,7,8,9]
 
-TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist}
+TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist,"greedy":GreedyAgent}
 
 
 
@@ -24,7 +24,9 @@ class game(object):
 
 		# array of territories;
 		# 0 : available, 1 : player 1, 2 : Player 2
-		self.territories = [0]*len(self.available_terr)
+		
+		#self.territories = [0]*len(self.available_terr)
+		
 		# number of initial aramies each player has
 		self.armies = armies
 		# array of Players
@@ -45,8 +47,6 @@ class game(object):
 				del self.available_terr[t]
 			print(self.players[i].territories)
 			# print(self.players[i].territories[0].taken_by)
-
-
 
 
 	def game_over(self):
@@ -137,6 +137,10 @@ usaMap = {
 
 
 # FOR TESTING
+<<<<<<< HEAD
 g = game("usa", ("pacifist", "aggressive"),3)
+=======
+g = game("usa", ("passive", "greedy"),3)
+>>>>>>> greedy neighbours counting heuristics
 g.random_dist_terr()
 g.run()
