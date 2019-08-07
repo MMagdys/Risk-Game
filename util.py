@@ -8,11 +8,12 @@ def map_to_terr(country_map):
 		# print(i, country_map[i])
 		terr.append(Territory(i))
 
+	# print(len(country_map))
 	for i in country_map:
 		for n in country_map[i]:
-			print(i, n)
+			# print(i, n)
 			terr[i].neighbours.append(terr[n])
-			print(terr[i].neighbours)
+			# print(terr[i].neighbours)
 	
 	return terr
 
