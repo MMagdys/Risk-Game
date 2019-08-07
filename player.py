@@ -36,11 +36,23 @@ class AggressiveAgent(object):
 			for n in i.neighbours:
 				if n.taken_by != self:
 					attack_surface.append((n, i))
+
+		new_attack_surface = None
 		while attack_surface:
+
+			if new_attack_surface:
+				# print("AFTER ATTACK")
+				# print(new_attack_surface)
+				for n in new_attack_surface.neighbours:
+					if n.taken_by != self:
+						attack_surface.append((n, i))
+				new_attack_surface = None
+
 			attackable_territory = max(attack_surface)
-			print(attackable_territory)
+			# print(attackable_territory)
 			if attackable_territory[0].troops < attackable_territory[1].troops - 1:
 				attack(attackable_territory[1], attackable_territory[0])
+				new_attack_surface = attackable_territory[1]
 			attack_surface.remove(attackable_territory)
 
 
@@ -65,11 +77,22 @@ class Pacifist(object):
 				if n.taken_by != self:
 					attack_surface.append((n, i))
 
+		new_attack_surface = None
 		while attack_surface:
+
+			if new_attack_surface:
+				# print("AFTER ATTACK")
+				# print(new_attack_surface)
+				for n in new_attack_surface.neighbours:
+					if n.taken_by != self:
+						attack_surface.append((n, i))
+				new_attack_surface = None
+
 			attackable_territory = min(attack_surface)
-			print(attackable_territory)
+			# print(attackable_territory)
 			if attackable_territory[0].troops < attackable_territory[1].troops - 1:
 				attack(attackable_territory[1], attackable_territory[0])
+				new_attack_surface = attackable_territory[1]
 			attack_surface.remove(attackable_territory)
 
 
