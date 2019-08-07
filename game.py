@@ -51,20 +51,24 @@ class game(object):
 
 	def game_over(self):
 
-		return 1
+		# In case of 2 players
+		for p in self.players:
+			if len(p.territories) == 0:
+				return 0
 
+		return 1
 
 
 	def run(self):
 
-		# while self.game_over():
-		t=0
-		while t < 3:
+		while self.game_over():
+		# t=0
+		# while t < 3:
 			for player in self.players:
 				bouns_armies = len(player.territories) // 3
 				if bouns_armies < 3: bouns_armies = 3
 				player.play(bouns_armies)
-				t += 1
+				# t += 1
 			print("\n\nTURN")
 			print("player 1")
 			print(self.players[0].territories)
@@ -133,6 +137,6 @@ usaMap = {
 
 
 # FOR TESTING
-g = game("usa", ("passive", "aggressive"),3)
+g = game("usa", ("pacifist", "aggressive"),3)
 g.random_dist_terr()
 g.run()
