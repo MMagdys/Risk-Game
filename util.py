@@ -3,7 +3,7 @@ from territory import Territory
 
 def map_to_terr(country_map):
 
-	terr = [len(country_map)]
+	terr = []
 	for i in country_map:
 		# print(i, country_map[i])
 		terr.append(Territory(i))
@@ -12,7 +12,7 @@ def map_to_terr(country_map):
 	for i in country_map:
 		for n in country_map[i]:
 			# print(i, n)
-			terr[i].neighbours.append(terr[n])
+			terr[i-1].neighbours.append(terr[n-1])
 			# print(terr[i].neighbours)
 	
 	return terr

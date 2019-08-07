@@ -1,5 +1,5 @@
 import random
-from  player import PassiveAgent, AggressiveAgent
+from  player import PassiveAgent, AggressiveAgent, Pacifist
 from territory import Territory
 from util import map_to_terr
 
@@ -8,7 +8,7 @@ EGY = ["Cairo", "Alexandria"]
 # USA = ["CA", "MA"]
 USA = [0,1,2,3,4,5,6,7,8,9]
 
-TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent}
+TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist}
 
 
 
@@ -40,10 +40,12 @@ class game(object):
 			for j in range(self.armies):
 				t = random.randint(0, len(self.available_terr)-1)
 				self.available_terr[t].troops = 1
-				self.taken_by = self.players[i]
+				self.available_terr[t].taken_by = self.players[i]
 				self.players[i].territories.append(self.available_terr[t])
 				del self.available_terr[t]
 			print(self.players[i].territories)
+			# print(self.players[i].territories[0].taken_by)
+
 
 
 
@@ -63,10 +65,11 @@ class game(object):
 				if bouns_armies < 3: bouns_armies = 3
 				player.play(bouns_armies)
 				t += 1
-		print("\nplayer 1")
-		print(self.players[0].territories)
-		print("\nplayer 2")
-		print(self.players[1].territories)
+			print("\n\nTURN")
+			print("player 1")
+			print(self.players[0].territories)
+			print("player 2")
+			print(self.players[1].territories)
 
 
 
