@@ -4,7 +4,7 @@ from mpl_toolkits.basemap import Basemap as Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 from game import Game
-import time
+
 
 class GameBoard(object):
 
@@ -31,21 +31,26 @@ class GameBoard(object):
 			self.states.add(state)
 
 		self.states = list(self.states)
-		# for terr in self.terriories_map:
-		# 	if terr.taken_by == self.players[0]:
-		# 		seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
-		# 		poly = Polygon(seg, facecolor='blue',edgecolor='blue')
-		# 		self.ax.add_patch(poly)
-		# 	elif terr.taken_by == self.players[1]:
-		# 		seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
-		# 		poly = Polygon(seg, facecolor='red',edgecolor='red')
-		# 		self.ax.add_patch(poly)
+		for terr in self.terriories_map:
+			if terr.taken_by == self.players[0]:
+				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
+				self.ax.add_patch(poly)
+			elif terr.taken_by == self.players[1]:
+				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				poly = Polygon(seg, facecolor='red',edgecolor='red')
+				self.ax.add_patch(poly)
 
+		plt.title('Risk Game')
+		cid = plt.gcf().canvas.mpl_connect("button_press_event", self.onclick)
+		plt.gcf().canvas.mpl_connect('key_press_event', self.press)
+		plt.show()
 
 		
 
-	def update(self):
-		# plt.clear()
+	def onclick(self, event):
+		g.turn()
+		
 		for terr in self.terriories_map:
 			if terr.taken_by == self.players[0]:
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
@@ -57,12 +62,31 @@ class GameBoard(object):
 				self.ax.add_patch(poly)
 			else:
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
-				poly = Polygon(seg, facecolor='yellow',edgecolor='yellow')
+				poly = Polygon(seg, facecolor='white',edgecolor='white')
 				self.ax.add_patch(poly)
 		
+		plt.draw()
 
-		plt.title('Risk Game')
-		plt.show()
+
+
+	def press(self, event):
+		g.turn()
+		
+		for terr in self.terriories_map:
+			if terr.taken_by == self.players[0]:
+				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
+				self.ax.add_patch(poly)
+			elif terr.taken_by == self.players[1]:
+				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				poly = Polygon(seg, facecolor='red',edgecolor='red')
+				self.ax.add_patch(poly)
+			else:
+				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				poly = Polygon(seg, facecolor='white',edgecolor='white')
+				self.ax.add_patch(poly)
+		
+		plt.draw()
 
 
 
@@ -71,52 +95,7 @@ class GameBoard(object):
 # FOR TESTING
 g = Game("usa", ("aggressive", "pacifist"),3)
 g.random_dist_terr()
-# print(g.territories)
-g.run()
-time.sleep(1)
+
 gui = GameBoard(g.territories, g.players)
-print(g.territories)
-
-gui.update()
 
 
-
-
-
-
-# g = GameBoard("")
-
-
-
-
-# country_map = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
-# 		projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
-
-
-# shp_info = country_map.readshapefile('st99_d00','states',drawbounds=True)
-
-# state_names=[]
-# for shapedict in country_map.states_info:
-# 	statename = shapedict['NAME']
-# 	state_names.append(statename)
-
-# states = set()
-# for state in state_names:
-#     states.add(state)
-
-# print(states, len(states))
-
-
-# ax = plt.gca()
-# # get Texas and draw the filled polygon
-# seg = country_map.states[state_names.index('Texas')]
-# poly = Polygon(seg, facecolor='red',edgecolor='red')
-# ax.add_patch(poly)
-
-# seg = country_map.states[state_names.index('Virginia')]
-# poly = Polygon(seg, facecolor='blue',edgecolor='blue')
-# ax.add_patch(poly)
-
-
-# plt.title('Risk Game')
-# # plt.show()

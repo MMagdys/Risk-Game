@@ -43,6 +43,8 @@ class Game(object):
 					self.territories[t].troops = 1
 					self.territories[t].taken_by = self.players[i]
 					self.players[i].territories.append(self.territories[t])
+				else:
+					j -= 1
 			print(self.players[i].territories)
 			# print(self.players[i].territories[0].taken_by)
 
@@ -57,7 +59,7 @@ class Game(object):
 		return 1
 
 
-	def run(self):
+	def run(self, gui):
 
 		# g = GameBoard(self.territories, self.players)
 		# gui = threading.Thread(target=g.update)
@@ -66,21 +68,39 @@ class Game(object):
 		# time.sleep(3)
 
 
-		while self.game_over():
-		# t=0
-		# while t < 50:
+		# while self.game_over():
+		t=0
+		while t < 50:
 			for player in self.players:
 				bouns_armies = len(player.territories) // 3
 				if bouns_armies < 3: bouns_armies = 3
 				player.play(bouns_armies)
-				# t += 1
+				t += 1
 			print("\n\nTURN")
 			print("player 1")
 			print(self.players[0].territories)
 			print("player 2")
 			print(self.players[1].territories)
-			# g.update()
+			gui.update()
 			# time.sleep(1)
+
+
+
+	def turn(self):
+
+
+		for player in self.players:
+			bouns_armies = len(player.territories) // 3
+			if bouns_armies < 3: bouns_armies = 3
+			player.play(bouns_armies)
+
+		print("\n\nTURN")
+		print("player 1")
+		print(self.players[0].territories)
+		print("player 2")
+		print(self.players[1].territories)
+		# g.update()
+		# time.sleep(1)
 
 
 
