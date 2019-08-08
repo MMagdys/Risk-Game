@@ -2,7 +2,7 @@ import random
 from player import PassiveAgent, AggressiveAgent, Pacifist
 from territory import Territory
 from util import map_to_terr
-from ai import GreedyAgent
+from ai import GreedyAgent, AstarAgent
 # from ui import GameBoard
 import time
 import threading
@@ -12,7 +12,7 @@ EGY = ["Cairo", "Alexandria"]
 USA = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 TYPE = {"passive": PassiveAgent,
-        "aggressive": AggressiveAgent, "pacifist": Pacifist, 'greedy': GreedyAgent}
+        "aggressive": AggressiveAgent, "pacifist": Pacifist, 'greedy': GreedyAgent, 'astar': AstarAgent}
 
 
 class Game(object):
@@ -29,9 +29,10 @@ class Game(object):
         # array of Players
         self.players = []
         for p in range(number):
-
             if ply_type[p] is 'greedy':
                 self.players.append(TYPE[ply_type[p]](self.territories))
+            # if ply_type[p] is 'astar':
+            #     self.players.append(TYPE[ply_type[p]](self.territories))
             else:
                 self.players.append(TYPE[ply_type[p]]())
 
@@ -39,7 +40,7 @@ class Game(object):
 
         for i in range(len(self.players)):
             for j in range(self.armies):
-                t = random.randint(0, len(self.territories)-1)
+                t = random.randint(0, len(self.territories) - 1)
                 if self.territories[t].taken_by == None:
                     self.territories[t].troops = 1
                     self.territories[t].taken_by = self.players[i]
@@ -157,9 +158,8 @@ usaMap = {
     50: [1, 2],
 }
 
-
 # FOR TESTING
 # g = Game("usa", ("pacifist", "aggressive"),3)
-g = Game("usa", ("passive", "greedy"), 3)
+g = Game("usa", ("astar", "pacifist"), 3)
 g.random_dist_terr()
 g.run()
