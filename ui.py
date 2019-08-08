@@ -12,6 +12,7 @@ class GameBoard(object):
 
 		self.terriories_map = terriories_map
 		self.players = players
+		self.texts = []
 
 		self.country_map = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
 		projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
@@ -33,10 +34,20 @@ class GameBoard(object):
 		self.states = list(self.states)
 		for terr in self.terriories_map:
 			if terr.taken_by == self.players[0]:
+				# Number of troops in each state
+				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
+				self.texts.append(txt)
+				# Coloring the state
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
 				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
 				self.ax.add_patch(poly)
 			elif terr.taken_by == self.players[1]:
+				# Number of troops in each state
+				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
+				self.texts.append(txt)
+				# Coloring the state
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
 				poly = Polygon(seg, facecolor='red',edgecolor='red')
 				self.ax.add_patch(poly)
@@ -48,15 +59,31 @@ class GameBoard(object):
 
 		
 
-	def onclick(self, event):
-		g.turn()
-		
+	def update(self):
+		# Clear all previous number of troops in each territory
+		# print(self.texts)
+		for txt in self.texts:
+			txt.remove()
+		self.texts = []
+		plt.draw()
+
+		# Update the map with the new game state
 		for terr in self.terriories_map:
 			if terr.taken_by == self.players[0]:
+				# Number of troops in each state
+				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
+				self.texts.append(txt)
+				# Coloring the state
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
 				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
 				self.ax.add_patch(poly)
 			elif terr.taken_by == self.players[1]:
+				# Number of troops in each state
+				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
+				self.texts.append(txt)
+				# Coloring the state
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
 				poly = Polygon(seg, facecolor='red',edgecolor='red')
 				self.ax.add_patch(poly)
@@ -66,27 +93,20 @@ class GameBoard(object):
 				self.ax.add_patch(poly)
 		
 		plt.draw()
+
+
+
+	def onclick(self, event):
+		
+		g.turn()
+		self.update()
 
 
 
 	def press(self, event):
+		
 		g.turn()
-		
-		for terr in self.terriories_map:
-			if terr.taken_by == self.players[0]:
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
-				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
-				self.ax.add_patch(poly)
-			elif terr.taken_by == self.players[1]:
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
-				poly = Polygon(seg, facecolor='red',edgecolor='red')
-				self.ax.add_patch(poly)
-			else:
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
-				poly = Polygon(seg, facecolor='white',edgecolor='white')
-				self.ax.add_patch(poly)
-		
-		plt.draw()
+		self.update()
 
 
 
