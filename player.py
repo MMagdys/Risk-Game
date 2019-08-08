@@ -33,31 +33,7 @@ class AggressiveAgent(object):
 		terr.troops += army
 
 		# Greedly attacks whatever he can
-		# get all neigbours he can attack
-		attack_surface = []
-		for i in self.territories:
-			for n in i.neighbours:
-				if n.taken_by != self:
-					attack_surface.append((n, i))
-
-		new_attack_surface = None
-		while attack_surface:
-			#  Newly accquired territory
-			if new_attack_surface:
-				# print("AFTER ATTACK")
-				# print(new_attack_surface)
-				for n in new_attack_surface.neighbours:
-					if n.taken_by != self:
-						attack_surface.append((n, i))
-				new_attack_surface = None
-
-			attackable_territory = max(attack_surface)
-			# print(attackable_territory)
-			if attackable_territory[0].taken_by != self:
-				if attackable_territory[1].can_win(attackable_territory[0]):
-					attack(attackable_territory[1], attackable_territory[0], self)
-					new_attack_surface = attackable_territory[1]
-			attack_surface.remove(attackable_territory)
+		attack(self, max)
 
 
 
@@ -74,36 +50,12 @@ class Pacifist(object):
 		terr = min_terr(self.territories)
 		terr.troops += army
 
-		# Conquer territory with the fewest armies
-		# get neigbours all territories
-		attack_surface = []
-		for i in self.territories:
-			for n in i.neighbours:
-				if n.taken_by != self:
-					attack_surface.append((n, i))
-
-		new_attack_surface = None
-		while attack_surface:
-			#  Newly accquired territory
-			if new_attack_surface:
-				# print("AFTER ATTACK")
-				# print(new_attack_surface)
-				for n in new_attack_surface.neighbours:
-					if n.taken_by != self:
-						attack_surface.append((n, i))
-				new_attack_surface = None
-
-			attackable_territory = min(attack_surface)
-			# print(attackable_territory)
-			if attackable_territory[0].taken_by != self:
-				if attackable_territory[1].can_win(attackable_territory[0]):
-					attack(attackable_territory[1], attackable_territory[0], self)
-					new_attack_surface = attackable_territory[1]
-			attack_surface.remove(attackable_territory)
+		# Conquer the territory with the fewest armies
+		attack(self, min)
 
 
 
-def attack(attacker, victim, player):
+def conquer(attacker, victim, player):
 
 	print("Attacking " + str(victim) + " with " + str(attacker))
 	if victim.troops < attacker.troops - 1:
@@ -143,3 +95,33 @@ def min_terr(territories):
 	for t in territories:  
 		if t.id == terr[1]:
 			return t
+
+
+
+def attack(player, function):
+
+		# get all neigbours he can attack
+	attack_surface = []
+	for terr in player.territories:
+		for neigh in terr.neighbours:
+			if neigh.taken_by != player:
+				attack_surface.append((neigh, terr))
+
+		new_attack_surface = None
+		while attack_surface:
+			#  Newly accquired territory
+			if new_attack_surface:
+				# print("AFTER ATTACK")
+				# print(new_attack_surface)
+				for neigh in new_attack_surface.neighbours:
+					if neigh.taken_by != player:
+						attack_surface.append((neigh, new_attack_surface))
+				new_attack_surface = None
+
+			target, attacker = function(attack_surface)
+			# print(attackable_territory)
+			if target.taken_by != player:
+				if attacker.can_win(target):
+					conquer(attacker, target, attacker)
+					new_attack_surface = target
+			attack_surface.remove((target, attacker))

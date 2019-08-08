@@ -113,7 +113,7 @@ class GameBoard(object):
 
 
 # FOR TESTING
-g = Game("usa", ("aggressive", "pacifist"),3)
+g = Game("usa", ("pacifist", "aggressive"),3)
 g.random_dist_terr()
 
 gui = GameBoard(g.territories, g.players)
