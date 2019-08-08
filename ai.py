@@ -3,9 +3,8 @@ class GreedyAgent:
         self.board = board
         self.territories = territories
 
-    # ana bahbed hena
     # return neighbour with most enemies (higher potenial )
-    def calculateHeuristics(self):
+    def calculateHeuristics():
         # return (my_terr, vicitim_terr)
         max_enemies = current_enemies = 0
         my_goal_terr = None
