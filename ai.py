@@ -3,6 +3,7 @@ class GreedyAgent:
         self.board = board
         self.territories = territories
 
+    # ana bahbed hena
     # return neighbour with most enemies (higher potenial )
     def calculateHeuristics(self):
         # return (my_terr, vicitim_terr)
