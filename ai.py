@@ -4,10 +4,7 @@ class GreedyAgent:
         self.territories = territories
 
     # return neighbour with most enemies (higher potenial )
-    def calculateHeuristics():
-        # return (my_terr, vicitim_terr)
-        max_enemies = current_enemies = 0
-        my_goal_terr = None
+    def crr = None
         # get terr with most enemies
         for terr in self.territories:
             for neighbour in terr.neighbours:
