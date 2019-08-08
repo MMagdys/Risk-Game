@@ -88,6 +88,7 @@ class Game(object):
 
 	def turn(self):
 
+		if self.game_over == 0 : return
 
 		for player in self.players:
 			bouns_armies = len(player.territories) // 3

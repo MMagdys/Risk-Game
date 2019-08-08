@@ -55,6 +55,9 @@ class GameBoard(object):
 		plt.title('Risk Game')
 		cid = plt.gcf().canvas.mpl_connect("button_press_event", self.onclick)
 		plt.gcf().canvas.mpl_connect('key_press_event', self.press)
+		# plt.plot('-b', label=self.players[0])
+		# plt.plot('-r', label=self.players[1])
+		# plt.legend(loc='lower right')
 		plt.show()
 
 		

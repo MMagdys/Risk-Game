@@ -10,11 +10,11 @@ class PassiveAgent(object):
 
 	def play(self, army):
 
-		terr = heapq.heappop(self.territories)
-		# print(terr.troops)
+		if not self.territories: return
+
+		# Only placing bouns armies into territory with the fewest armies
+		terr = min_terr(self.territories)
 		terr.troops += army
-		heapq.heappush(self.territories, terr)
-		# print(terr.troops)
 
 
 
@@ -28,6 +28,7 @@ class AggressiveAgent(object):
 
 	def play(self, army):
 
+		if not self.territories: return
 		# Placing bouns armies on the territory with the most armies
 		terr = max_terr(self.territories)
 		terr.troops += army
@@ -46,6 +47,7 @@ class Pacifist(object):
 
 	def play(self, army):
 
+		if not self.territories: return
 		# Placing bouns armies on the territory with the fewest armies
 		terr = min_terr(self.territories)
 		terr.troops += army
@@ -117,6 +119,8 @@ def attack(player, function):
 					if neigh.taken_by != player:
 						attack_surface.append((neigh, new_attack_surface))
 				new_attack_surface = None
+
+			if not attack_surface : return
 
 			target, attacker = function(attack_surface)
 			# print(attackable_territory)
