@@ -1,5 +1,3 @@
-
-
 class GreedyAgent:
     def __init__(self, board=[], territories=[]):
         self.board = board
