@@ -15,13 +15,13 @@ class Territory:
 
 	def __lt__(self, other):
 
-		return self.troops < other.troops
+		return self.id < other.id
 
 
 
 	def __eq__(self, other):
 
-		return self.troops == other.troops
+		return self.id == other.id
 
 
 
@@ -43,8 +43,7 @@ class Territory:
 
 
 
-	def add_troops(self, player, troops):
+	def can_win(self, other):
 
-		self.taken_by = player
-		self.troops = self.troops + troops
+		return other.troops < self.troops - 1
 

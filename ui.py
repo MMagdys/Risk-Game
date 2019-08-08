@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap as Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
-
+from game import Game
+import time
 
 class GameBoard(object):
 
@@ -54,11 +55,29 @@ class GameBoard(object):
 				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
 				poly = Polygon(seg, facecolor='red',edgecolor='red')
 				self.ax.add_patch(poly)
+			else:
+				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				poly = Polygon(seg, facecolor='yellow',edgecolor='yellow')
+				self.ax.add_patch(poly)
 		
 
 		plt.title('Risk Game')
-		plt.show(block=False)
+		plt.show()
 
+
+
+
+
+# FOR TESTING
+g = Game("usa", ("aggressive", "pacifist"),3)
+g.random_dist_terr()
+# print(g.territories)
+g.run()
+time.sleep(1)
+gui = GameBoard(g.territories, g.players)
+print(g.territories)
+
+gui.update()
 
 
 

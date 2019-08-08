@@ -2,8 +2,8 @@ import random
 from  player import PassiveAgent, AggressiveAgent, Pacifist
 from territory import Territory
 from util import map_to_terr
-from ai import GreedyAgent
-from ui import GameBoard
+# from ai import GreedyAgent
+# from ui import GameBoard
 import time
 import threading
 
@@ -11,11 +11,11 @@ EGY = ["Cairo", "Alexandria"]
 # USA = ["CA", "MA"]
 USA = [0,1,2,3,4,5,6,7,8,9]
 
-TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist, "greedy": GreedyAgent}
+TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist}
 
 
 
-class game(object):
+class Game(object):
 
 
 	def __init__(self, country, ply_type, armies=20, number=2):
@@ -59,16 +59,16 @@ class game(object):
 
 	def run(self):
 
-		g = GameBoard(self.territories, self.players)
+		# g = GameBoard(self.territories, self.players)
 		# gui = threading.Thread(target=g.update)
 		# gui.start() 
-		g.update()
-		time.sleep(3)
+		# g.update()
+		# time.sleep(3)
 
 
 		while self.game_over():
 		# t=0
-		# while t < 3:
+		# while t < 50:
 			for player in self.players:
 				bouns_armies = len(player.territories) // 3
 				if bouns_armies < 3: bouns_armies = 3
@@ -144,7 +144,7 @@ usaMap = {
 
 
 # FOR TESTING
-g = game("usa", ("pacifist", "aggressive"),3)
-# g = game("usa", ("passive", "greedy"),3)
-g.random_dist_terr()
-g.run()
+# g = Game("usa", ("pacifist", "aggressive"),3)
+# # g = game("usa", ("passive", "greedy"),3)
+# g.random_dist_terr()
+# g.run()
