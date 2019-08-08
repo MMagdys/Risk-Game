@@ -129,3 +129,54 @@ def attack(player, function):
 					conquer(attacker, target, attacker)
 					new_attack_surface = target
 			attack_surface.remove((target, attacker))
+
+
+
+def diff(a, b):
+
+	return[i for i in a if i not in b]
+
+
+
+def defense_mechanism(player, bouns_armies):
+
+	weak_points = {}
+	boarder_terr = []
+
+	for terr in player.territories:
+		for neigh in terr.neighbours:
+			if neigh.taken_by != player:
+				boarder_terr.append(terr)
+
+	
+	for terr in boarder_terr:
+		for neigh in terr.neighbours:
+			if neigh.can_win(terr):
+				diff = neigh.troops - terr.troops
+				if weak_points[terr.id]:
+					weak_points[terr.id] = max(diff, weak_points[terr.id])
+				weak_points[terr.id] = diff
+
+
+	for terr in player.territories:
+		for neigh in terr.neighbours:
+			if neigh.can_win(terr):
+				diff = neigh.troops - terr.troops
+				# if diff <= bouns_armies:
+				if weak_points[terr.id]:
+					weak_points[terr.id] = max(diff, weak_points[terr.id])
+				weak_points[terr.id] = neigh.troops - terr.troops
+
+	weak_points = sorted(weak_points.items(), key = lambda kv: kv[1])
+	for terr in weak_points:
+		if terr[1] <= bouns_armies:
+			for t in boarder_terr:
+				if t.id == terr[0]:
+					t.troops += bouns_armies
+					return
+
+	else:
+		temp = diff(player.territories, boarder_terr)
+		t = min(temp)
+		t.troops += bouns_armies
+		return
