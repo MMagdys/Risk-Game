@@ -29,12 +29,12 @@ class Game(object):
         # array of Players
         self.players = []
         for p in range(number):
-            if ply_type[p] is 'greedy':
-                self.players.append(TYPE[ply_type[p]](self.territories))
+            # if ply_type[p] is 'greedy':
+            #     self.players.append(TYPE[ply_type[p]](self.territories))
             # if ply_type[p] is 'astar':
             #     self.players.append(TYPE[ply_type[p]](self.territories))
-            else:
-                self.players.append(TYPE[ply_type[p]]())
+            # else:
+            self.players.append(TYPE[ply_type[p]]())
 
     def random_dist_terr(self):
 

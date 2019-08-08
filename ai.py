@@ -24,7 +24,7 @@ class GreedyAgent:
         frontier = deque(self.calculateHeuristics())
         count = 1
         while frontier:
-            frontier = deque(sorted(list(frontier), key=lambda terr: terr[2]))
+            frontier = deque(sorted(list(frontier), key=lambda terr: terr[2],reverse=True))
             attackable_terr = frontier.popleft()
             if count == 1:
                 attackable_terr[0].troops += army
@@ -61,7 +61,7 @@ class AstarAgent:
         frontier = deque(self.calculateHeuristics())
         count = 1
         while frontier:
-            frontier = deque(sorted(list(frontier), key=lambda terr: terr[2]))
+            frontier = deque(sorted(list(frontier), key=lambda terr: terr[2],reverse=True))
             attackable_terr = frontier.popleft()
             if count == 1:
                 attackable_terr[0].troops += army
