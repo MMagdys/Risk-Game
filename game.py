@@ -3,12 +3,15 @@ from  player import PassiveAgent, AggressiveAgent, Pacifist
 from territory import Territory
 from util import map_to_terr
 from ai import GreedyAgent
+from ui import GameBoard
+import time
+import threading
 
 EGY = ["Cairo", "Alexandria"]
 # USA = ["CA", "MA"]
 USA = [0,1,2,3,4,5,6,7,8,9]
 
-TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist,"greedy":GreedyAgent}
+TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist, "greedy": GreedyAgent}
 
 
 
@@ -18,15 +21,10 @@ class game(object):
 	def __init__(self, country, ply_type, armies=20, number=2):
 
 		if country.lower() == "egypt":
-			self.available_terr = EGY
+			self.territories = EGY
 		elif country.lower() == "usa":
-			self.available_terr = map_to_terr(usaMap) #USA
+			self.territories = map_to_terr(usaMap) #USA
 
-		# array of territories;
-		# 0 : available, 1 : player 1, 2 : Player 2
-		
-		#self.territories = [0]*len(self.available_terr)
-		
 		# number of initial aramies each player has
 		self.armies = armies
 		# array of Players
@@ -40,11 +38,11 @@ class game(object):
 
 		for i in range(len(self.players)):
 			for j in range(self.armies):
-				t = random.randint(0, len(self.available_terr)-1)
-				self.available_terr[t].troops = 1
-				self.available_terr[t].taken_by = self.players[i]
-				self.players[i].territories.append(self.available_terr[t])
-				del self.available_terr[t]
+				t = random.randint(0, len(self.territories)-1)
+				if self.territories[t].taken_by == None:
+					self.territories[t].troops = 1
+					self.territories[t].taken_by = self.players[i]
+					self.players[i].territories.append(self.territories[t])
 			print(self.players[i].territories)
 			# print(self.players[i].territories[0].taken_by)
 
@@ -61,6 +59,13 @@ class game(object):
 
 	def run(self):
 
+		g = GameBoard(self.territories, self.players)
+		# gui = threading.Thread(target=g.update)
+		# gui.start() 
+		g.update()
+		time.sleep(3)
+
+
 		while self.game_over():
 		# t=0
 		# while t < 3:
@@ -74,6 +79,8 @@ class game(object):
 			print(self.players[0].territories)
 			print("player 2")
 			print(self.players[1].territories)
+			# g.update()
+			# time.sleep(1)
 
 
 
@@ -137,10 +144,7 @@ usaMap = {
 
 
 # FOR TESTING
-<<<<<<< HEAD
 g = game("usa", ("pacifist", "aggressive"),3)
-=======
-g = game("usa", ("passive", "greedy"),3)
->>>>>>> greedy neighbours counting heuristics
+# g = game("usa", ("passive", "greedy"),3)
 g.random_dist_terr()
 g.run()
