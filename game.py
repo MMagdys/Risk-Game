@@ -160,6 +160,6 @@ usaMap = {
 
 # FOR TESTING
 # g = Game("usa", ("pacifist", "aggressive"),3)
-g = Game("usa", ("astar", "pacifist"), 3)
+g = Game("usa", ("greedy", "pacifist"), 3)
 g.random_dist_terr()
 g.run()
