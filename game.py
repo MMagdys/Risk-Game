@@ -18,7 +18,7 @@ TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Paci
 
 class Game(object):
 
-	def __init__(self, country, ply_type, armies=20, number=2):
+	def __init__(self, country, players, armies=20, number=2):
 
 		if country.lower() == "egypt":
 			self.territories = EGY
@@ -28,7 +28,7 @@ class Game(object):
 		# number of initial aramies each player has
 		self.armies = armies
 		# array of Players
-		self.players = ply_type
+		self.players = players
 		# for p in range(number):
 		# 	# if ply_type[p] is 'greedy':
 		# 	#     self.players.append(TYPE[ply_type[p]](self.territories))
