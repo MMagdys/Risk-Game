@@ -3,16 +3,35 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap as Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
+from matplotlib.widgets import Button
 from game import Game
+from player import PassiveAgent, AggressiveAgent, Pacifist, HumanAgent
+from ai import GreedyAgent, AstarAgent
+
+TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist,\
+		"greedy": GreedyAgent, "astar": AstarAgent, "human": HumanAgent}
 
 
 class GameBoard(object):
 
-	def __init__(self, terriories_map, players, country="usa"):
+	def __init__(self, ply_type, terriories_map=None, number=2, country="usa"):
 
-		self.terriories_map = terriories_map
-		self.players = players
+		self.players = []
+		self.human = None
+		for p in range(number):
+			if ply_type[p] == "human":
+				self.human = TYPE[ply_type[p]]()
+				self.players.append(self.human)
+			else:
+				self.players.append(TYPE[ply_type[p]]())
+
+		
+		self.game = Game("usa", self.players, 3)
+		self.game.random_dist_terr()
+
+		self.terriories_map = self.game.territories
 		self.texts = []
+
 
 		self.country_map = Basemap(llcrnrlon=-119,llcrnrlat=22,urcrnrlon=-64,urcrnrlat=49,
 		projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
@@ -24,36 +43,33 @@ class GameBoard(object):
 		for shapedict in self.country_map.states_info:
 			statename = shapedict['NAME']
 			self.state_names.append(statename)
-
 		# print(self.state_names)
 		
-		self.states = set()
-		for state in self.state_names:
-			self.states.add(state)
-
-		self.states = list(self.states)
 		for terr in self.terriories_map:
 			if terr.taken_by == self.players[0]:
 				# Number of troops in each state
-				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				s = np.array(self.country_map.states[self.state_names.index(id2name[terr.id])]).mean(axis=0)
 				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
 				self.texts.append(txt)
 				# Coloring the state
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				seg = self.country_map.states[self.state_names.index(id2name[terr.id])]
 				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
 				self.ax.add_patch(poly)
 			elif terr.taken_by == self.players[1]:
 				# Number of troops in each state
-				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				s = np.array(self.country_map.states[self.state_names.index(id2name[terr.id])]).mean(axis=0)
 				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
 				self.texts.append(txt)
 				# Coloring the state
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				seg = self.country_map.states[self.state_names.index(id2name[terr.id])]
 				poly = Polygon(seg, facecolor='red',edgecolor='red')
 				self.ax.add_patch(poly)
 
 		plt.title('Risk Game')
-		cid = plt.gcf().canvas.mpl_connect("button_press_event", self.onclick)
+
+		if self.human:
+			cid = plt.gcf().canvas.mpl_connect("button_press_event", lambda event: self.onclick(event))
+		
 		plt.gcf().canvas.mpl_connect('key_press_event', self.press)
 		# plt.plot('-b', label=self.players[0])
 		# plt.plot('-r', label=self.players[1])
@@ -74,24 +90,24 @@ class GameBoard(object):
 		for terr in self.terriories_map:
 			if terr.taken_by == self.players[0]:
 				# Number of troops in each state
-				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				s = np.array(self.country_map.states[self.state_names.index(id2name[terr.id])]).mean(axis=0)
 				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
 				self.texts.append(txt)
 				# Coloring the state
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				seg = self.country_map.states[self.state_names.index(id2name[terr.id])]
 				poly = Polygon(seg, facecolor='blue',edgecolor='blue')
 				self.ax.add_patch(poly)
 			elif terr.taken_by == self.players[1]:
 				# Number of troops in each state
-				s = np.array(self.country_map.states[self.state_names.index(self.states[terr.id])]).mean(axis=0)
+				s = np.array(self.country_map.states[self.state_names.index(id2name[terr.id])]).mean(axis=0)
 				txt = plt.text(s[0],s[1], str(terr.troops), ha="center")
 				self.texts.append(txt)
 				# Coloring the state
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				seg = self.country_map.states[self.state_names.index(id2name[terr.id])]
 				poly = Polygon(seg, facecolor='red',edgecolor='red')
 				self.ax.add_patch(poly)
 			else:
-				seg = self.country_map.states[self.state_names.index(self.states[terr.id])]
+				seg = self.country_map.states[self.state_names.index(id2name[terr.id])]
 				poly = Polygon(seg, facecolor='white',edgecolor='white')
 				self.ax.add_patch(poly)
 		
@@ -100,25 +116,97 @@ class GameBoard(object):
 
 
 	def onclick(self, event):
-		
-		g.turn()
-		self.update()
 
+		self.human.play(event, self, plt)
+		print(self.human.territories)
+
+		self.update()
+		
 
 
 	def press(self, event):
 		
-		g.turn()
-		self.update()
+		if self.game.turn():
+			self.update()
+
+
+	def dd(self, event):
+
+		event.x, event.y = event.xdata, event.ydata
+		for s in range(len(self.state_names)):
+			if Polygon(self.country_map.states[s]).contains(event)[0]:
+				print(self.state_names[s], event.button)
+				if event.button == 1:
+					poly = Polygon(self.country_map.states[s], facecolor='yellow',edgecolor='yellow')
+					self.ax.add_patch(poly)
+
+				elif event.button == 3:
+					poly = Polygon(self.country_map.states[s], facecolor='green',edgecolor='yellow')
+					self.ax.add_patch(poly)
+		plt.draw()
 
 
 
 
+id2name = {
+	1 : "Washington",
+	2 : "Oregon",
+	3 : "California",
+	4 : "Nevada",
+	5 : "Idaho",
+	6 : "Montana",
+	7 : "Wyoming",
+	8 : "Utah",
+	9 : "Arizona",
+	10 : "Colorado",
+	11 : "New Mexico",
+	12 : "Texas",
+	13 : "Oklahoma",
+	14 : "Kansas",
+	15 : "Nebraska",
+	16 : "South Dakota",
+	17 : "North Dakota",
+	18 : "Minnesota",
+	19 : "Iowa",
+	20 : "Missouri",
+	21 : "Arkansas",
+	22 : "Louisiana",
+	23 : "Mississippi",
+	24 : "Alabama",
+	25 : "Florida",
+	26 : "Georgia",
+	27 : "South Carolina",
+	28 : "North Carolina",
+	29 : "Virginia",
+	30 : "West Virginia",
+	31 : "Tennessee",
+	32 : "Kentucky",
+	33 : "Illinois",
+	34 : "Wisconsin",
+	35 : "Indiana",
+	36 : "Michigan",
+	37 : "Ohio",
+	38 : "Pennsylvania",
+	39 : "New York",
+	40 : "Vermont",
+	41 : "New Hampshire",
+	42 : "Maine",
+	43 : "Massachusetts",
+	44 : "Rhode Island",
+	45 : "Connecticut",
+	46 : "New Jersey",
+	47 : "Delaware",
+	48 : "Maryland",
+	49 : "Hawaii",
+	50 : "Alaska",
+}
 
 # FOR TESTING
-g = Game("usa", ("greedy", "aggressive"),5)
-g.random_dist_terr()
+# g = Game("usa", ("passive", "human"),3)
+# g.random_dist_terr()
 
-gui = GameBoard(g.territories, g.players)
+# gui = GameBoard(g.territories, g.players)
+gui = GameBoard(("astar", "human"))
+
 
 
