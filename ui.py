@@ -197,7 +197,7 @@ id2name = {
 # g.random_dist_terr()
 
 # gui = GameBoard(g.territories, g.players)
-gui = GameBoard(("pacifist", "minimax"))
+# gui = GameBoard(("pacifist", "minimax"))
 
 
 
