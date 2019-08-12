@@ -5,12 +5,18 @@ from territory import Territory
 
 
 class GreedyAgent:
+
     def __init__(self, territories=[]):
+
         self.territories = territories
 
     # calculate troops difference
     # number of =
+
+
+
     def calculateHeuristics(self):
+
         my_goal_terr = []
         count = 0
         h = 0
@@ -25,7 +31,10 @@ class GreedyAgent:
 
         return my_goal_terr
 
+
+
     def play(self, army):
+
         frontier = deque(self.calculateHeuristics())
         count = 1
         while frontier:
@@ -40,14 +49,18 @@ class GreedyAgent:
                 attack(attackable_terr[1], attackable_terr[0])
 
 
+
 class AstarAgent:
     def __init__(self, board=[], territories=[]):
+
         self.board = board
         self.territories = territories
 
-    # calculate troops difference
+    
 
+    # calculate troops difference
     def calculateHeuristics(self):
+
         my_goal_terr = []
         count = 0
         h = 0
@@ -66,7 +79,10 @@ class AstarAgent:
 
         return my_goal_terr
 
+
+
     def play(self, army):
+
         frontier = deque(self.calculateHeuristics())
         count = 1
         while frontier:
@@ -80,13 +96,20 @@ class AstarAgent:
             if attackable_terr[1].troops < attackable_terr[0].troops - 1:
                 attack(attackable_terr[1], attackable_terr[0])
 
+
+
 class RealtimeAstarAgent(object):
+
     def __init__(self, board=[], territories=[]):
+
         self.board = board
         self.territories = territories
-    # calculate troops difference
 
+
+
+    # calculate troops difference
     def calculateHeuristics(self, h):
+
         my_goal_terr = []
         count = 0
         #h = 0
@@ -104,6 +127,7 @@ class RealtimeAstarAgent(object):
             g = 0
 
         return my_goal_terr
+
 
 
     def play(self, army):
@@ -129,28 +153,31 @@ class RealtimeAstarAgent(object):
                 attack(attackable_terr[1], attackable_terr[0])
 
 
-class Player:
-    def __init__(self):
-        self.territories = []
-
 
 class MiniMaxNode:
     # each state is a board instance
     # board is the array of territories
     # board is the intial state
     def __init__(self, board=[], other_agent=None):
+
         self.board = board
         self.max = other_agent
         self.min = Player()
         self.territories = self.min.territories
 
+
+
     def eval(self):
+
         # enemies_terr ----->>>> max
         # my_terr ----->>>> min
         # return + val if min has more territories
         return len(self.min.territories) - len(self.max.territories)
 
+
+
     def is_terminal_state(self):
+
         # if one has no territories then it's a terminal state therfore return true
         if len(self.min.territories) == 0 or len(self.max.territories) == 0:
             return True
@@ -171,6 +198,8 @@ class MiniMaxNode:
         # else no possible attacks therefore will return true
         return True
 
+
+
     def maximize(self, alpha, beta):
 
         if self.is_terminal_state():
@@ -190,6 +219,8 @@ class MiniMaxNode:
 
         return max_child, max_utility
 
+
+
     def minimize(self, alpha, beta):
 
         if self.is_terminal_state():
@@ -208,7 +239,10 @@ class MiniMaxNode:
                 beta = min_utility
         return min_child, min_utility
 
+
+
     def get_min_attackables(self):
+
         attackable = []
         for terr in self.min.territories:
             for n in terr.neighbours:
@@ -216,7 +250,10 @@ class MiniMaxNode:
                     attackable.append((terr, n))
         return attackable
 
+
+
     def get_children(self):
+
         attackable = self.get_min_attackables()
         children = []
 
@@ -227,7 +264,10 @@ class MiniMaxNode:
 
             # change the attacker and victim in the new board
 
+
+
     def new_board(self, attacker, victim):
+
         board = copy(self.board)
         vic = board[board.index(victim)]
         att = board[board.index(attacker)]
@@ -237,11 +277,16 @@ class MiniMaxNode:
         att.troops = 1
         return board
 
+
+
     def play(self, bouns_army):
+
         self.maximize(math.inf, math.inf)
 
 
+
 def attack(victim, attacker):
+    
     print("Attacking " + str(victim) + " with " + str(attacker))
 
     if victim.taken_by:
