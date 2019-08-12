@@ -97,7 +97,6 @@ class MiniMaxNode:
         self.territories = self.min.territories
 
     def eval(self):
-
         # enemies_terr ----->>>> max
         # my_terr ----->>>> min
         # return + val if min has more territories
@@ -121,7 +120,7 @@ class MiniMaxNode:
                     if terr.can_win(n):
                         return False
 
-        # else no possible attacks therfore will return true
+        # else no possible attacks therefore will return true
         return True
 
     def maximize(self, alpha, beta):
@@ -190,7 +189,7 @@ class MiniMaxNode:
         att.troops = 1
         return board
 
-    def play(self, army):
+    def play(self):
         self.maximize(math.inf, math.inf)
 
 

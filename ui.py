@@ -6,10 +6,10 @@ from matplotlib.patches import Polygon
 from matplotlib.widgets import Button
 from game import Game
 from player import PassiveAgent, AggressiveAgent, Pacifist, HumanAgent
-from ai import GreedyAgent, AstarAgent
+from ai import GreedyAgent, AstarAgent, MiniMaxNode
 
 TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist,
-		"greedy": GreedyAgent, "astar": AstarAgent, "human": HumanAgent}
+		"greedy": GreedyAgent, "astar": AstarAgent, "human": HumanAgent, "minimax": MiniMaxNode}
 
 
 class GameBoard(object):
@@ -206,7 +206,7 @@ id2name = {
 # g.random_dist_terr()
 
 # gui = GameBoard(g.territories, g.players)
-gui = GameBoard(("astar", "human"))
+gui = GameBoard(("pacifist", "aggressive"))
 
 
 
