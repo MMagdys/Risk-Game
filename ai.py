@@ -181,17 +181,17 @@ class MiniMaxNode:
             attackable = self.get_min_attackables()
             # change the attacker and victim in the new board
 
-    def new_board(self, attacker, victim, army):
+    def new_board(self, attacker, victim):
         board = copy(self.board)
         vic = board[board.index(victim)]
         att = board[board.index(attacker)]
 
         vic.taken_by = att.taken_by
-        vic.troops = army
-        att.troops -= army
+        vic.troops = att.troops - 1
+        att.troops = 1
         return board
 
-    def decission(self):
+    def decision(self):
         child, _ = self.maximize(math.inf, math.inf)
         return child
 
