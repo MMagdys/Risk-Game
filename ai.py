@@ -104,7 +104,6 @@ class MiniMaxNode:
         return len(self.min.territories) - len(self.max.territories)
 
     def is_terminal_state(self):
-
         # if one has no territories then it's a terminal state therfore return true
         if len(self.min.territories) == 0 or len(self.max.territories) == 0:
             return True
@@ -181,14 +180,14 @@ class MiniMaxNode:
 
             # change the attacker and victim in the new board
 
-    def new_board(self, attacker, victim, army):
+    def new_board(self, attacker, victim):
         board = copy(self.board)
         vic = board[board.index(victim)]
         att = board[board.index(attacker)]
 
         vic.taken_by = att.taken_by
-        vic.troops = army
-        att.troops -= army
+        vic.troops = att.troops - 1
+        att.troops = 1
         return board
 
     def play(self, army):

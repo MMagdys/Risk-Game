@@ -8,7 +8,7 @@ from game import Game
 from player import PassiveAgent, AggressiveAgent, Pacifist, HumanAgent
 from ai import GreedyAgent, AstarAgent
 
-TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist,\
+TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Pacifist,
 		"greedy": GreedyAgent, "astar": AstarAgent, "human": HumanAgent}
 
 
