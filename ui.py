@@ -18,18 +18,24 @@ class GameBoard(object):
 
 		self.players = []
 		self.human = None
+		self.game = Game("usa", armies=3)
+		self.terriories_map = self.game.territories
+
 		for p in range(number):
 			if ply_type[p] == "human":
 				self.human = TYPE[ply_type[p]]()
 				self.players.append(self.human)
+
+			elif ply_type[p] == "minimax":
+				self.players.append(TYPE[ply_type[p]](self.game.territories, self.players[0]))
+
 			else:
 				self.players.append(TYPE[ply_type[p]]())
 
 		
-		self.game = Game("usa", self.players, 3)
+		self.game.players = self.players
 		self.game.random_dist_terr()
 
-		self.terriories_map = self.game.territories
 		self.texts = []
 
 
@@ -130,21 +136,6 @@ class GameBoard(object):
 			self.update()
 
 
-	def dd(self, event):
-
-		event.x, event.y = event.xdata, event.ydata
-		for s in range(len(self.state_names)):
-			if Polygon(self.country_map.states[s]).contains(event)[0]:
-				print(self.state_names[s], event.button)
-				if event.button == 1:
-					poly = Polygon(self.country_map.states[s], facecolor='yellow',edgecolor='yellow')
-					self.ax.add_patch(poly)
-
-				elif event.button == 3:
-					poly = Polygon(self.country_map.states[s], facecolor='green',edgecolor='yellow')
-					self.ax.add_patch(poly)
-		plt.draw()
-
 
 
 
@@ -206,7 +197,7 @@ id2name = {
 # g.random_dist_terr()
 
 # gui = GameBoard(g.territories, g.players)
-gui = GameBoard(("pacifist", "aggressive"))
+gui = GameBoard(("pacifist", "minimax"))
 
 
 

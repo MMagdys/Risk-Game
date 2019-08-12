@@ -17,7 +17,7 @@ TYPE = {"passive": PassiveAgent, "aggressive": AggressiveAgent, "pacifist": Paci
 
 
 class Game(object):
-    def __init__(self, country, players, armies=20, number=2):
+    def __init__(self, country, players=None, armies=20, number=2):
 
         if country.lower() == "egypt":
             self.territories = EGY
@@ -27,26 +27,27 @@ class Game(object):
         # number of initial aramies each player has
         self.armies = armies
         # array of Players
-        self.players = []
+        self.players = players
+        # self.players = []
         other_player = 0
-        for p in range(number):
-            # if ply_type[p] is 'greedy':
-            #     self.players.append(TYPE[ply_type[p]](self.territories))
-            # if ply_type[p] is 'astar':
-            #     self.players.append(TYPE[ply_type[p]](self.territories))
-            if players[p] is 'minimax':
-                if p == 0:
-                    other_player = 1
-                    self.players.append(TYPE[players[p]](self.territories,self.players[other_player]))
-                else:
-                    self.players.append(TYPE[players[p]](self.territories,self.players[other_player]))
-            else:
-                self.players.append(TYPE[players[p]]())
+        # for p in range(number):
+        #     # if ply_type[p] is 'greedy':
+        #     #     self.players.append(TYPE[ply_type[p]](self.territories))
+        #     # if ply_type[p] is 'astar':
+        #     #     self.players.append(TYPE[ply_type[p]](self.territories))
+        #     if players[p] is 'minimax':
+        #         if p == 0:
+        #             other_player = 1
+        #             self.players.append(TYPE[players[p]](self.territories,self.players[other_player]))
+        #         else:
+        #             self.players.append(TYPE[players[p]](self.territories,self.players[other_player]))
+        #     else:
+        #         self.players.append(TYPE[players[p]]())
 
 
     def random_dist_terr(self):
-        for i in range(len(self.players)):
-            for j in range(self.armies):
+        for j in range(self.armies):
+            for i in range(len(self.players)):
                 t = random.randint(0, len(self.territories) - 1)
                 if self.territories[t].taken_by == None:
                     self.territories[t].troops = 1
@@ -162,6 +163,6 @@ usaMap = {
 
 # FOR TESTING
 # g = Game("usa", ("pacifist", "aggressive"),3)
-g = Game("usa", ("passive",'minimax'), 3)
-g.random_dist_terr()
-g.run()
+# g = Game("usa", ("passive",'minimax'), 3)
+# g.random_dist_terr()
+# g.run()

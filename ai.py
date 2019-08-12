@@ -189,7 +189,7 @@ class MiniMaxNode:
         att.troops = 1
         return board
 
-    def play(self):
+    def play(self, bouns_army):
         self.maximize(math.inf, math.inf)
 
 
