@@ -2,7 +2,7 @@ import random
 from player import PassiveAgent, AggressiveAgent, Pacifist
 from territory import Territory
 from util import map_to_terr
-from ai import GreedyAgent, AstarAgent
+from ai import GreedyAgent, AstarAgent, MiniMaxNode
 # from ui import GameBoard
 import time
 import threading
@@ -12,11 +12,11 @@ EGY = ["Cairo", "Alexandria"]
 USA = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 TYPE = {"passive": PassiveAgent,
-        "aggressive": AggressiveAgent, "pacifist": Pacifist, 'greedy': GreedyAgent, 'astar': AstarAgent}
+        "aggressive": AggressiveAgent, "pacifist": Pacifist, 'greedy': GreedyAgent,
+        'astar': AstarAgent, 'minimax': MiniMaxNode}
 
 
 class Game(object):
-
     def __init__(self, country, ply_type, armies=20, number=2):
 
         if country.lower() == "egypt":
@@ -34,7 +34,14 @@ class Game(object):
             # if ply_type[p] is 'astar':
             #     self.players.append(TYPE[ply_type[p]](self.territories))
             # else:
-            self.players.append(TYPE[ply_type[p]]())
+            other_index = 0
+
+            if ply_type[p] is 'minimax':
+                if p == 0:
+                    other_index = 1
+                self.players.append(TYPE[ply_type[p]](self.territories, TYPE[ply_type[other_index]]))
+            else:
+                self.players.append(TYPE[ply_type[p]]())
 
     def random_dist_terr(self):
 
@@ -69,7 +76,7 @@ class Game(object):
 
         # while self.game_over():
         t = 0
-        while t < 50:
+        while t < 200:
             for player in self.players:
                 bouns_armies = len(player.territories) // 3
                 if bouns_armies < 3:
@@ -160,6 +167,6 @@ usaMap = {
 
 # FOR TESTING
 # g = Game("usa", ("pacifist", "aggressive"),3)
-g = Game("usa", ("greedy", "pacifist"), 3)
+g = Game("usa", ("minimax", "passive"), 3)
 g.random_dist_terr()
 g.run()
