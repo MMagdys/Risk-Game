@@ -80,7 +80,7 @@ class AstarAgent:
             if attackable_terr[1].troops < attackable_terr[0].troops - 1:
                 attack(attackable_terr[1], attackable_terr[0])
 
-class RealTimeAstarAgent:
+class RealtimeAstarAgent(object):
     def __init__(self, board=[], territories=[]):
         self.board = board
         self.territories = territories
