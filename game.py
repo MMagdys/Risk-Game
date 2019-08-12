@@ -37,9 +37,9 @@ class Game(object):
             if players[p] is 'minimax':
                 if p == 0:
                     other_player = 1
-                    self.players.append(TYPE[players[p]](self.territories, TYPE[players[other_player]]))
+                    self.players.append(TYPE[players[p]](self.territories,self.players[other_player]))
                 else:
-                    self.players.append(TYPE[players[p]](self.territories, TYPE[players[other_player]]))
+                    self.players.append(TYPE[players[p]](self.territories,self.players[other_player]))
             else:
                 self.players.append(TYPE[players[p]]())
 
@@ -162,6 +162,6 @@ usaMap = {
 
 # FOR TESTING
 # g = Game("usa", ("pacifist", "aggressive"),3)
-g = Game("usa", ("minimax", "passive"), 3)
+g = Game("usa", ("passive",'minimax'), 3)
 g.random_dist_terr()
 g.run()

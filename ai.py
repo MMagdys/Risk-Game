@@ -167,8 +167,7 @@ class MiniMaxNode:
         for terr in self.min.territories:
             for n in terr.neighbours:
                 if n.taken_by != self.min:
-                    if terr.troops - n.troops > 1:
-                        attackable.append((terr, n))
+                    attackable.append((terr, n))
         return attackable
 
     def get_children(self):
